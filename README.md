@@ -98,30 +98,30 @@ Prototype and build IoT systems without setting up servers or developing web sof
 # PROGRAM:
 ```
 #include <WiFi.h>
-#include "ThingSpeak.h" 
+#include "ThingSpeak.h" // always include thingspeak header file after other header files and custom macros
 #define Soil_Moisture 34
-char ssid[] = "Pooja'sS23FE";
-char pass[] = "Pooja@2006"";
-int keyIndex = 0;
+char ssid[] = "OnePlus 11R";   // your network SSID (name) 
+char pass[] = "qwertyui";   // your network password
+int keyIndex = 0;            // your network key Index number (needed only for WEP)
 WiFiClient  client;
 
-unsigned long myChannelNumber = 2794372;
+unsigned long myChannelNumber = 2792152;
 const int ChannelField = 1; 
-const char * myWriteAPIKey = "LU9LLSVOV5BQL3SQ";
+const char * myWriteAPIKey = "UB3PHLWYQX7F4BDZ";
 
-const int airValue = 4095; 
+const int airValue = 4095;      // Analog value when the sensor is in dry air
 const int waterValue = 0;
 int percentage =0;
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(115200);  //Initialize serial
   pinMode(Soil_Moisture, INPUT);
   WiFi.mode(WIFI_STA);   
-  ThingSpeak.begin(client);
+  ThingSpeak.begin(client);  // Initialize ThingSpeak
 }
 
 void loop()
 {
- if (WiFi.status() != WL_CONNECTED)
+if (WiFi.status() != WL_CONNECTED)
   {
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(ssid);
@@ -134,35 +134,30 @@ void loop()
     Serial.println("\nConnected.");
   }
 
+ /* Soil MoistureSensor */
   int Soil_Value = analogRead(Soil_Moisture);
   percentage = map(Soil_Value, airValue, waterValue, 0, 100);
 
+  // Ensure the percentage stays in the 0-100 range
   percentage = constrain(percentage, 0, 100);
   Serial.println("Soil moisture percentage");
   Serial.println(percentage);
-  ThingSpeak.writeField(myChannelNumber, ChannelField, percentage, myWriteAPIKey);
+ThingSpeak.writeField(myChannelNumber, ChannelField, percentage, myWriteAPIKey);
   
-   delay(5000);
+   delay(5000); // Wait 20 seconds to update the channel again
 }
 ```
 # CIRCUIT DIAGRAM:
 
-<img src="https://github.com/user-attachments/assets/e9354cb0-d372-463b-a8a4-fce432485a30" width="600">
+![WhatsApp Image 2024-12-24 at 09 51 23](https://github.com/user-attachments/assets/60c8ae21-507d-4fce-826f-b50196e2e15a)
 
 # OUTPUT:
+![Screenshot 2024-12-21 112214](https://github.com/user-attachments/assets/5c62cf57-aae2-4ada-9565-fa4cc030ce4c)
 
-<img src="https://github.com/user-attachments/assets/b2d182b7-5653-45fa-8126-38743eba4861" width="600">
-
-<img src="https://github.com/user-attachments/assets/d7190729-b5d1-4170-89aa-030d9737328d" width="600">
+![Screenshot 2024-12-24 102409](https://github.com/user-attachments/assets/3d9b6d2f-6d2f-468f-85cf-bf8d4bde221d)
 
 # RESULT:
 Thus the soil moisture values are updated in the Thing speak cloud using ESP32 controller.
-
-
-
-
-
-
 
 
 
