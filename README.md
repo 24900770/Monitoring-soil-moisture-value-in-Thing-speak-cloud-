@@ -1,8 +1,6 @@
-# Monitoring-distance-value-in-Thing-speak-cloud-using-ultrasonic-sensor-and-ESP32-controller
-### NAME: HARIHARAN M
-### REG NO: 24900770
-
-# Uploading ultrasonic sensor data in Thing Speak cloud
+## NAME: Hariharan M
+## REG NO: 24900770
+# EXP 5 MONITORING SOIL MOISTURE VALUE IN THING SPEAK CLOUD
 
 # AIM:
 To monitor the distance of the obstacle in the Thing speak cloud using ultrasonic sensor and ESP32 controller.
