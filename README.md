@@ -96,34 +96,32 @@ Prototype and build IoT systems without setting up servers or developing web sof
 
  
 # PROGRAM:
-#include "ThingSpeak.h"
+```
 #include <WiFi.h>
-
-char ssid[] = "OnePlus 11R"; //SSID
-char pass[] = "qwertyui"; // Password
-
-
-const int trigger = 25;
-const int echo = 26;
-long T;
-float distanceCM;
+#include "ThingSpeak.h" 
+#define Soil_Moisture 34
+char ssid[] = "Pooja'sS23FE";
+char pass[] = "Pooja@2006"";
+int keyIndex = 0;
 WiFiClient  client;
 
-unsigned long myChannelField = 2792164; // Channel ID
-const int ChannelField = 1; // Which channel to write data
-const char * myWriteAPIKey = "HF6JQNUBORCD8NBU"; // Your write API Key
+unsigned long myChannelNumber = 2794372;
+const int ChannelField = 1; 
+const char * myWriteAPIKey = "LU9LLSVOV5BQL3SQ";
 
-void setup()
-{
+const int airValue = 4095; 
+const int waterValue = 0;
+int percentage =0;
+void setup() {
   Serial.begin(115200);
-  pinMode(trigger, OUTPUT);
-  pinMode(echo, INPUT);
-  WiFi.mode(WIFI_STA);
+  pinMode(Soil_Moisture, INPUT);
+  WiFi.mode(WIFI_STA);   
   ThingSpeak.begin(client);
 }
+
 void loop()
 {
-  if (WiFi.status() != WL_CONNECTED)
+ if (WiFi.status() != WL_CONNECTED)
   {
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(ssid);
@@ -135,30 +133,36 @@ void loop()
     }
     Serial.println("\nConnected.");
   }
-  digitalWrite(trigger, LOW);
-  delay(1);
-  digitalWrite(trigger, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigger, LOW);
-  T = pulseIn(echo, HIGH);
-  distanceCM = T * 0.034;
-  distanceCM = distanceCM / 2;
-  Serial.print("Distance in cm: ");
-  Serial.println(distanceCM);
-  ThingSpeak.writeField(myChannelField, ChannelField, distanceCM, myWriteAPIKey);
-  delay(1000);
+
+  int Soil_Value = analogRead(Soil_Moisture);
+  percentage = map(Soil_Value, airValue, waterValue, 0, 100);
+
+  percentage = constrain(percentage, 0, 100);
+  Serial.println("Soil moisture percentage");
+  Serial.println(percentage);
+  ThingSpeak.writeField(myChannelNumber, ChannelField, percentage, myWriteAPIKey);
+  
+   delay(5000);
 }
+```
 # CIRCUIT DIAGRAM:
 
-![WhatsApp Image 2024-12-24 at 10 36 29](https://github.com/user-attachments/assets/9983b5aa-814c-4e95-beb9-60c24c1cd1e8)
+<img src="https://github.com/user-attachments/assets/e9354cb0-d372-463b-a8a4-fce432485a30" width="600">
 
 # OUTPUT:
 
-![397915806-f5f23f64-2b89-4142-8574-e07d772b9842](https://github.com/user-attachments/assets/5344858e-d37b-4869-80e6-41e387ce2e6e)
+<img src="https://github.com/user-attachments/assets/b2d182b7-5653-45fa-8126-38743eba4861" width="600">
 
-![397915792-16cbf01a-a10b-42a7-bf22-dfc3090cdb15](https://github.com/user-attachments/assets/0fc5c87d-cbbe-46da-a430-d20460b4e4cb)
-
+<img src="https://github.com/user-attachments/assets/d7190729-b5d1-4170-89aa-030d9737328d" width="600">
 
 # RESULT:
-Thus the distance values are updated in the Thing speak cloud using ESP32 controller.
+Thus the soil moisture values are updated in the Thing speak cloud using ESP32 controller.
+
+
+
+
+
+
+
+
 
